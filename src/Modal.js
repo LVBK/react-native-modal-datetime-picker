@@ -10,6 +10,8 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 
+const supportedOrientations= ['portrait', 'landscape']; 
+
 export class Modal extends Component {
   static propTypes = {
     onBackdropPress: PropTypes.func,
@@ -117,7 +119,7 @@ export class Modal extends Component {
       ]
     };
     return (
-      <ReactNativeModal transparent animationType="none" visible={isVisible}>
+      <ReactNativeModal transparent animationType="none" visible={isVisible} supportedOrientations={supportedOrientations}>
         <TouchableWithoutFeedback onPress={onBackdropPress}>
           <Animated.View
             style={[
