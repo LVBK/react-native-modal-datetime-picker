@@ -4,8 +4,9 @@ about: Report a reproducible or regression bug.
 labels: "bug"
 ---
 
-<!-- NOTE: Under the hood react-native-modal-datetime-picker uses react-native original DatePickerAndroid, TimePickerAndroid and DatePickerIOS.
-Before reporting a bug, try swapping react-native-datetime-picker with react-native original date/time pickers to check if the problem persists. If it does please report the issue in the react-native repo instead. -->
+<!-- NOTE: Under the hood react-native-modal-datetime-picker uses [react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker).
+Before reporting a bug, swap react-native-datetime-picker with [react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker) to check if the problem persists. If it does please report the issue in the [react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker) repo instead. -->
+<!-- Please notice that WE WON'T SUPPORT ISSUE IF YOU HAVEN'T TRIED USING THE COMMUNITY COMPONENT ALONE. -->
 
 ## Environment
 
@@ -22,6 +23,7 @@ Before reporting a bug, try swapping react-native-datetime-picker with react-nat
 - Android:
 - iOS:
 - react-native-modal-datetime-picker:
+- [react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker):
 - react-native:
 - react:
 
@@ -32,4 +34,5 @@ Before reporting a bug, try swapping react-native-datetime-picker with react-nat
 ## Reproducible Demo
 
 <!-- Let us know how to reproduce the issue. Include a code sample or share a project that reproduces the issue. -->
-<!-- Please follow the guidelines for providing a minimal example: https://stackoverflow.com/help/mcve -->
+<!-- Follow the guidelines for providing a minimal example: https://stackoverflow.com/help/mcve -->
+<!-- Please notice that WE WON'T SUPPORT ISSUE REPORTS THAT DON'T HAVE A MINIMAL REPRODUCIBLE EXAMPLE. -->

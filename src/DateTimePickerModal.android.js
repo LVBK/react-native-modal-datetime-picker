@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default class DateTimePickerModal extends React.PureComponent {
+export class DateTimePickerModal extends React.PureComponent {
   static propTypes = {
     date: PropTypes.instanceOf(Date),
     isVisible: PropTypes.bool,
@@ -10,17 +10,17 @@ export default class DateTimePickerModal extends React.PureComponent {
     onConfirm: PropTypes.func.isRequired,
     onHide: PropTypes.func,
     maximumDate: PropTypes.instanceOf(Date),
-    minimumDate: PropTypes.instanceOf(Date)
+    minimumDate: PropTypes.instanceOf(Date),
   };
 
   static defaultProps = {
     date: new Date(),
     isVisible: false,
-    onHide: () => {}
+    onHide: () => {},
   };
 
   state = {
-    currentMode: null
+    currentMode: null,
   };
 
   currentDate = this.props.date;

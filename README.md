@@ -54,7 +54,7 @@ const Example = () => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = date => {
+  const handleConfirm = (date) => {
     console.warn("A date has been picked: ", date);
     hideDatePicker();
   };
@@ -89,13 +89,13 @@ export default Example;
 | headerTextIOS           | string    | "Pick a date" | The title text of header (iOS)                                                                  |
 | isDarkModeEnabled       | bool      | false         | Is the device using a dark theme?                                                               |
 | isVisible               | bool      | false         | Show the datetime picker?                                                                       |
+| modalPropsIOS           | object    | {}            | Additional [modal](https://reactnative.dev/docs/modal) props for iOS                            |
 | modalStyleIOS           | style     |               | Style of the modal content (iOS)                                                                |
 | mode                    | string    | "date"        | Choose between 'date', 'time', and 'datetime'                                                   |
 | onCancel                | func      | **REQUIRED**  | Function called on dismiss                                                                      |
 | onConfirm               | func      | **REQUIRED**  | Function called on date or time picked. It returns the date or time as a JavaScript Date object |
 | onHide                  | func      | () => null    | Called after the hide animation                                                                 |
 | pickerContainerStyleIOS | style     |               | The style of the picker container (iOS)                                                         |
-| titleStyle              | style     |               | The style of the title text (iOS)                                                               |
 
 👉Please notice that **all the [`@react-native-community/react-native-datetimepicker`](https://github.com/react-native-community/react-native-datetimepicker) props are also supported**!
 
@@ -110,6 +110,14 @@ Before reporting a bug, try swapping `react-native-datetime-picker` with [`@reac
 
 Set the `mode` prop to `time`.
 You can also display both the datepicker and the timepicker in one step by setting the `mode` prop to `datetime`.
+
+### I can't set the initial date on the picker
+
+Please make sure you're using the `date` props (and not the `value` one).
+
+### The picker shows up twice on Android
+
+This seems to be a known issue of the [`@react-native-community/datetimepicker`](https://github.com/react-native-community/datetimepicker/issues/54). Please see [this thread](https://github.com/react-native-community/datetimepicker/issues/54) for a couple of workarounds.
 
 ### How do I change the color of the Android date and time pickers?
 
@@ -141,7 +149,7 @@ NSString *currentLanguage = [[NSLocale preferredLanguages] firstObject];
 
 ### I can't see the picker on iOS/the picker is white on iOS
 
-You're app is probably running in dark mode, which is [not supported by React-Native for the pickers yet](https://github.com/facebook/react-native/issues/26299).  
+Your app is probably running in dark mode, which is [not supported by React-Native for the pickers yet](https://github.com/facebook/react-native/issues/26299).  
 If you're not planning to support the iOS dark mode in your app, add the following to your `info.plist`:
 
 ```xml
@@ -155,8 +163,8 @@ Otherwise, see the "Is the iOS dark mode supported?" section below 👇
 
 iOS 13 dark mode is not supported out-of-the-box yet and requires a bit of manual setup:
 
-1. Install and link [react-native-appearance](https://github.com/expo/react-native-appearance)
-2. Use it to detect the device color scheme: `const colorScheme = Appearance.getColorScheme();`
+1. Import [useColorScheme](https://reactnative.dev/docs/usecolorscheme) from React-Native.
+2. Use this hook to detect the device color scheme: ` const colorScheme = useColorScheme();`
 3. Use the color scheme to enable/disable the `react-native-modal-datetime-picker` dark mode trough the `isDarkModeEnabled` prop: `isDarkModeEnabled: colorScheme === 'dark'`
 
 ### How do I make it work with snapshot testing?
@@ -169,4 +177,4 @@ Please see the [contributing guide](./.github/CONTRIBUTING.md).
 
 ## License
 
-The library is released under the MIT license. For more information see [`LICENSE`](/LICENSE.md).
+The library is released under the MIT license. For more details see [`LICENSE`](/LICENSE.md).

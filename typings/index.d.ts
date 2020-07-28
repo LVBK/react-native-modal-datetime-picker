@@ -3,11 +3,14 @@
 // Definitions by:
 // Kyle Roach <https://github.com/iRoachie>
 // Michiel De Mey <https://github.com/MichielDeMey>
-// TypeScript Version: 2.3.2
+// TypeScript Version: 3.5
 
 import * as React from "react";
-import { ViewStyle, TextStyle } from "react-native";
-import { IOSNativeProps } from "@react-native-community/datetimepicker";
+import { ViewStyle } from "react-native";
+import {
+  IOSNativeProps,
+  AndroidNativeProps,
+} from "@react-native-community/datetimepicker";
 
 export type CancelButtonComponent = React.ComponentType<{
   isDarkModeEnabled: boolean;
@@ -53,28 +56,6 @@ export interface DateTimePickerProps {
   customConfirmButtonIOS?: ConfirmButtonComponent;
 
   /**
-   * A custom component for the confirm button on iOS that will be shown while user interacting with the date picker
-   *
-   * Doesn't work without customConfirmButtonIOS
-   */
-  customConfirmButtonWhileInteractingIOS?: JSX.Element;
-
-  /**
-   * The style of the ReactNativeModal container on iOS
-   */
-  contentContainerStyleIOS?: ViewStyle;
-
-  /**
-   * The style of the cancel button container on iOS
-   */
-  cancelButtonContainerStyleIOS?: ViewStyle;
-
-  /**
-   * A custom style for the titleIOS (Default is 'Pick a Date')
-   */
-  titleStyle?: TextStyle;
-
-  /**
    * A custom component for the title container on iOS
    */
   customHeaderIOS?: HeaderComponent;
@@ -85,9 +66,14 @@ export interface DateTimePickerProps {
   customPickerIOS?: PickerComponent;
 
   /**
-   * The style of the container on iOS
+   * Style of the modal content (iOS)
    */
-  datePickerContainerStyleIOS?: ViewStyle;
+  modalStyleIOS?: ViewStyle;
+
+  /**
+   * The style of the picker container (iOS)
+   */
+  pickerContainerStyleIOS?: ViewStyle;
 
   /**
    * Initial selected date/time
@@ -134,6 +120,13 @@ export interface DateTimePickerProps {
    * Default is 'date'
    */
   mode?: "date" | "time" | "datetime";
+
+  /**
+   * Additional modal props for iOS.
+   *
+   * See https://reactnative.dev/docs/modal for the available props.
+   */
+  modalPropsIOS?: Object;
 
   /**
    * Toggles the time mode on Android between spinner and clock views
@@ -209,7 +202,11 @@ export interface DateTimePickerProps {
   testID?: string;
 }
 
+export type ReactNativeModalDateTimePickerProps = DateTimePickerProps &
+  Omit<IOSNativeProps, "value" | "mode"> &
+  Omit<AndroidNativeProps, "value" | "mode">;
+
 export default class DateTimePicker extends React.Component<
-  DateTimePickerProps,
+  ReactNativeModalDateTimePickerProps,
   any
 > {}

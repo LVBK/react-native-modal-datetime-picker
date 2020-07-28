@@ -5,31 +5,33 @@ import {
   DeviceEventEmitter,
   Dimensions,
   Easing,
-  Modal as ReactNativeModal,
   StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
+import { default as ReactNativeModal } from "react-native-modal";
 
-const supportedOrientations= ['portrait', 'landscape']; 
+const supportedOrientations = ["portrait", "landscape"];
+const MODAL_ANIM_DURATION = 300;
+const MODAL_BACKDROP_OPACITY = 0.4;
 
 export class Modal extends Component {
   static propTypes = {
     onBackdropPress: PropTypes.func,
     onHide: PropTypes.func,
     isVisible: PropTypes.bool,
-    contentStyle: PropTypes.any
+    contentStyle: PropTypes.any,
   };
 
   static defaultProps = {
     onBackdropPress: () => null,
     onHide: () => null,
-    isVisible: false
+    isVisible: false,
   };
 
   state = {
     isVisible: this.props.isVisible,
     deviceWidth: Dimensions.get("window").width,
-    deviceHeight: Dimensions.get("window").height
+    deviceHeight: Dimensions.get("window").height,
   };
 
   animVal = new Animated.Value(0);
@@ -62,9 +64,9 @@ export class Modal extends Component {
     }
   }
 
-  handleDimensionsUpdate = dimensionsUpdate => {
-    const deviceWidth = Dimensions.get("window").width;
-    const deviceHeight = Dimensions.get("window").height;
+  handleDimensionsUpdate = (dimensionsUpdate) => {
+    const deviceWidth = dimensionsUpdate.window.width;
+    const deviceHeight = dimensionsUpdate.window.height;
     if (
       deviceWidth !== this.state.deviceWidth ||
       deviceHeight !== this.state.deviceHeight
@@ -78,9 +80,9 @@ export class Modal extends Component {
     Animated.timing(this.animVal, {
       easing: Easing.inOut(Easing.quad),
       // Using native driver in the modal makes the content flash
-      // useNativeDriver: true,
-      duration: 300,
-      toValue: 1
+      useNativeDriver: false,
+      duration: MODAL_ANIM_DURATION,
+      toValue: 1,
     }).start();
   };
 
@@ -88,9 +90,9 @@ export class Modal extends Component {
     Animated.timing(this.animVal, {
       easing: Easing.inOut(Easing.quad),
       // Using native driver in the modal makes the content flash
-      // useNativeDriver: true,
-      duration: 300,
-      toValue: 0
+      useNativeDriver: false,
+      duration: MODAL_ANIM_DURATION,
+      toValue: 0,
     }).start(() => {
       if (this._isMounted) {
         this.setState({ isVisible: false }, this.props.onHide);
@@ -99,13 +101,18 @@ export class Modal extends Component {
   };
 
   render() {
-    const { children, onBackdropPress, contentStyle } = this.props;
+    const {
+      children,
+      onBackdropPress,
+      contentStyle,
+      ...otherProps
+    } = this.props;
     const { deviceHeight, deviceWidth, isVisible } = this.state;
     const backdropAnimatedStyle = {
       opacity: this.animVal.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 0.4]
-      })
+        outputRange: [0, MODAL_BACKDROP_OPACITY],
+      }),
     };
     const contentAnimatedStyle = {
       transform: [
@@ -113,21 +120,25 @@ export class Modal extends Component {
           translateY: this.animVal.interpolate({
             inputRange: [0, 1],
             outputRange: [deviceHeight, 0],
-            extrapolate: "clamp"
-          })
-        }
-      ]
+            extrapolate: "clamp",
+          }),
+        },
+      ],
     };
     return (
-      <ReactNativeModal transparent animationType="none" visible={isVisible} supportedOrientations={supportedOrientations}>
+      <ReactNativeModal
+        transparent
+        animationType="none"
+        visible={isVisible}
+        supportedOrientations={supportedOrientations}
+        {...otherProps}
+      >
         <TouchableWithoutFeedback onPress={onBackdropPress}>
           <Animated.View
             style={[
               styles.backdrop,
               backdropAnimatedStyle,
-              // Multiplied by 2 to make sure the backdrop covers the entire
-              // screen even while changing orientation
-              { width: deviceWidth * 2, height: deviceHeight * 2 }
+              { width: deviceWidth, height: deviceHeight },
             ]}
           />
         </TouchableWithoutFeedback>
@@ -150,7 +161,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   backdrop: {
     position: "absolute",
@@ -159,12 +170,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: "black",
-    opacity: 0
+    opacity: 0,
   },
   content: {
     flex: 1,
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 });
 
 export default Modal;
